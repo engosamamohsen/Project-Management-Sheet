@@ -202,7 +202,7 @@ google.service.account.client_x509_cert_url=https://www.googleapis.com/robot/v1/
 - Click Create - JSON file will download
   - "client_email": "EMAIL_SHARE_WITH_GOOGLE_SHEETS", // → google.service.account.client_email will be share into excel sheet
 
-### 4. Generate JSON Key
+### 4. Share Spreadsheet with Service Account
 - Open your Google Spreadsheet
 - Click Share (top-right corner)
 - Add the service account email as an editor:"EMAIL_SHARE_WITH_GOOGLE_SHEETS"
