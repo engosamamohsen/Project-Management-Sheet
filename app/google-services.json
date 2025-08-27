@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "927019936236",
+    "firebase_url": "https://project-management-e0859-default-rtdb.firebaseio.com",
+    "project_id": "project-management-e0859",
+    "storage_bucket": "project-management-e0859.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:927019936236:android:245f88e092b3856b8938c9",
+        "android_client_info": {
+          "package_name": "com.example.projectmanagement"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDeOlh5iY1z72S6WUXIYz64eYDJx4K9KwA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

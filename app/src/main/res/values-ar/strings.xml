@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="escape">تخطي</string>
+    <string name="start_now">إبدأ الآن</string>
+    <string name="evaluate_project_success_through_insights">قيّم نجاح المشروع من خلال الرؤى</string>
+    <string name="get_detailed_reports_at_your_fingertips">احصل على تقارير مفصلة في متناول يدك</string>
+    <string name="access_comprehensive_reports_for_managers">الوصول إلى تقارير شاملة للمديرين مع رؤى حول المصاريف، الإيرادات، وأداء المشاريع</string>
+    <string name="add_new_projects_easily">أضف المشاريع الجديدة بكل سهولة، وتابع المهام الجارية، وكن على اطلاع دائم بتقدم كل مشروع</string>
+    <string name="simplify_project_management">قم بتبسيط إدارة مشاريعك</string>
+    <string name="next">التالي</string>
+    <string name="analyze_project_results_and_criteria">حلل نتائج المشروع ومعاييره، وحدد نقاط التحسين، واعمل على تحسين سير العمل</string>
+    <string name="login">تسجيل الدخول</string>
+    <string name="welcome_please_enter_following_info">مرحبا بك ! من فضلك ادخل البيانات التالية</string>
+    <string name="email">البريد الإلكتروني</string>
+    <string name="enter_email">أدخل البريد الإلكتروني</string>
+
+    <string name="confirm">تأكيد</string>
+    <string name="time_remaining">الوقت المتبقي</string>
+    <string name="resend_code">إعادة إرسال الرمز</string>
+    <string name="create_new_password">إنشاء كلمة مرور جديدة</string>
+    <string name="please_enter_new_password">من فضلك! أدخل كلمة المرور الجديدة</string>
+    <string name="new_password">كلمة المرور الجديدة</string>
+    <string name="confirm_new_password">تأكيد كلمة المرور الجديدة</string>
+    <string name="reset_password">إعادة تعيين كلمة المرور</string>
+    <string name="bugs">الأخطاء</string>
+    <string name="add_bug">إضافة خطأ</string>
+    <string name="no_bugs_reports_yet">لا توجد تقارير أخطاء بعد</string>
+    <string name="submit">إرسال</string>
+    <string name="report_bug">الإبلاغ عن خطأ</string>
+    <string name="add_bug_report">إضافة تقرير خطأ</string>
+    <string name="add_your_images">أضف صورك</string>
+    <string name="press_click_to_upload_your_images">اضغط للرفع صورك</string>
+    <string name="max_limit_size">الحد الأقصى للحجم 10 ميجا</string>
+    <string name="add_your_desctription">أضف وصفك</string>
+    <string name="description">الوصف</string>
+    <string name="choose_image_type">اختر نوع الصورة</string>
+    <string name="please_select_bug_image">يرجى اختيار صورة للخطأ</string>
+    <string name="screenshot">لقطة شاشة</string>
+    <string name="gallery">المعرض</string>
+    <string name="select_multiple_images">اختر عدة صور</string>
+    <string name="uploading">جارٍ الرفع...</string>
+    <string name="submit_to_google_sheet">جارٍ الإرسال إلى جوجل شيت...</string>
+    <string name="submitting">جارٍ الإرسال...</string>
+    <string name="bug_reports">تقارير الأخطاء</string>
+    <string name="no_reports">لم يتم العثور على تقارير أخطاء</string>
+    <string name="loading_reports">جارٍ تحميل التقارير...</string>
+    <string name="view_image">عرض الصورة</string>
+    <string name="refresh">تحديث</string>
+</resources>
