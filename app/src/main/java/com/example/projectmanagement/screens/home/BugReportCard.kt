@@ -10,7 +10,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.projectmanagement.model.BugReport
+import com.example.projectmanagement.network.model.BugReport
 import kotlin.collections.component1
 import kotlin.collections.component2
 

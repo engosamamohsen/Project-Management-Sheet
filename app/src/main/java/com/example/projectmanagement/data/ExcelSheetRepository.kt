@@ -2,9 +2,9 @@ package com.example.projectmanagement.data
 
 import android.util.Log
 import com.example.projectmanagement.BuildConfig
-import com.example.projectmanagement.di.GoogleSheetsService
+import com.example.projectmanagement.network.di.GoogleSheetsService
 import com.example.projectmanagement.di.utils.BaseResponse
-import com.example.projectmanagement.model.BugReport
+import com.example.projectmanagement.network.model.BugReport
 import com.example.projectmanagement.screens.bug.EXCEL_COLUMN
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

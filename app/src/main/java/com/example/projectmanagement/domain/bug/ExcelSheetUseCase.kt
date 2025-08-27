@@ -3,7 +3,7 @@ package com.example.projectmanagement.domain.bug
 import com.example.projectmanagement.data.ExcelSheetRepository
 import com.example.projectmanagement.di.utils.BaseResponse
 import com.example.projectmanagement.domain.base.BaseUseCase
-import com.example.projectmanagement.model.BugReport
+import com.example.projectmanagement.network.model.BugReport
 import javax.inject.Inject
 
 class ExcelSheetUseCase @Inject constructor(

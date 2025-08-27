@@ -1,35 +1,25 @@
-package com.example.projectmanagement.di
+package com.example.projectmanagement.network.di
 
 import android.content.Context
 import android.util.Log
-import com.example.projectmanagement.BuildConfig
-import com.example.projectmanagement.model.BugReport
+import com.example.projectmanagement.network.config.NetworkConfig
+import com.example.projectmanagement.network.model.BugReport
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport
-import com.google.api.client.http.javanet.NetHttpTransport
 import com.google.api.client.json.gson.GsonFactory
 import com.google.api.services.sheets.v4.Sheets
 import com.google.api.services.sheets.v4.SheetsScopes
 import com.google.api.services.sheets.v4.model.ValueRange
-import com.google.auth.http.HttpCredentialsAdapter
-import com.google.auth.oauth2.ServiceAccountCredentials
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.ByteArrayInputStream
-import java.io.InputStream
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
 import javax.inject.Inject
 import javax.inject.Singleton
-import kotlin.plus
-import kotlin.text.contains
-import kotlin.text.get
-import kotlin.toString
 
 @Singleton
 class GoogleSheetsService @Inject constructor(
-    private val context: Context
+    private val context: Context,
+    private val config: NetworkConfig
 ) {
     companion object {
         private const val TAG = "GoogleSheetsService"
@@ -37,12 +27,8 @@ class GoogleSheetsService @Inject constructor(
         private val SCOPES = listOf(SheetsScopes.SPREADSHEETS)
         private val JSON_FACTORY = GsonFactory.getDefaultInstance()
     }
-
-    private val TAG = "GoogleSheetsService"
-    private val APPLICATION_NAME = "Project Management Bug Report"
-    private val SPREADSHEET_ID = BuildConfig.EXCEL_API_KEY
+    private val SPREADSHEET_ID = config.spreadsheetId
     private val RANGE = "Sheet1!A:D"
-
 
     //for debug mode check test connection
     suspend fun testConnection(): Boolean = withContext(Dispatchers.IO) {
@@ -61,26 +47,27 @@ class GoogleSheetsService @Inject constructor(
     private suspend fun getSheetsService(): Sheets = withContext(Dispatchers.IO) {
         try {
             // Validate that we have required credentials
-            if (BuildConfig.SERVICE_ACCOUNT_CLIENT_EMAIL.isBlank() ||
-                BuildConfig.SERVICE_ACCOUNT_PRIVATE_KEY.isBlank()) {
-                throw IllegalStateException("Service account credentials not found. Please check your local.properties file.")
+            if (config.serviceAccountClientEmail.isBlank() ||
+                config.serviceAccountPrivateKey.isBlank()
+            ) {
+                throw IllegalStateException("Service account credentials not found.")
             }
 
             val httpTransport = GoogleNetHttpTransport.newTrustedTransport()
 
-            // Create service account JSON from BuildConfig (loaded from local.properties)
+            // Create service account JSON from config
             val serviceAccountJson = """
                 {
-                  "type": "${BuildConfig.SERVICE_ACCOUNT_TYPE}",
-                  "project_id": "${BuildConfig.SERVICE_ACCOUNT_PROJECT_ID}",
-                  "private_key_id": "${BuildConfig.SERVICE_ACCOUNT_PRIVATE_KEY_ID}",
-                  "private_key": "${BuildConfig.SERVICE_ACCOUNT_PRIVATE_KEY}",
-                  "client_email": "${BuildConfig.SERVICE_ACCOUNT_CLIENT_EMAIL}",
-                  "client_id": "${BuildConfig.SERVICE_ACCOUNT_CLIENT_ID}",
-                  "auth_uri": "${BuildConfig.SERVICE_ACCOUNT_AUTH_URI}",
-                  "token_uri": "${BuildConfig.SERVICE_ACCOUNT_TOKEN_URI}",
-                  "auth_provider_x509_cert_url": "${BuildConfig.SERVICE_ACCOUNT_AUTH_PROVIDER_CERT_URL}",
-                  "client_x509_cert_url": "${BuildConfig.SERVICE_ACCOUNT_CLIENT_CERT_URL}",
+                  "type": "${config.serviceAccountType}",
+                  "project_id": "${config.serviceAccountProjectId}",
+                  "private_key_id": "${config.serviceAccountPrivateKeyId}",
+                  "private_key": "${config.serviceAccountPrivateKey}",
+                  "client_email": "${config.serviceAccountClientEmail}",
+                  "client_id": "${config.serviceAccountClientId}",
+                  "auth_uri": "${config.serviceAccountAuthUri}",
+                  "token_uri": "${config.serviceAccountTokenUri}",
+                  "auth_provider_x509_cert_url": "${config.serviceAccountAuthProviderCertUrl}",
+                  "client_x509_cert_url": "${config.serviceAccountClientCertUrl}",
                   "universe_domain": "googleapis.com"
                 }
             """.trimIndent()
@@ -90,15 +77,15 @@ class GoogleSheetsService @Inject constructor(
             val credential = GoogleCredential.fromStream(inputStream)
                 .createScoped(SCOPES)
 
-            Log.d(Companion.TAG, "Google Sheets service created successfully")
-            Log.d(Companion.TAG, "Using service account: ${BuildConfig.SERVICE_ACCOUNT_CLIENT_EMAIL}")
+            Log.d(TAG, "Google Sheets service created successfully")
+            Log.d(TAG, "Using service account: ${config.serviceAccountClientEmail}")
 
             return@withContext Sheets.Builder(httpTransport, JSON_FACTORY, credential)
-                .setApplicationName(Companion.APPLICATION_NAME)
+                .setApplicationName(APPLICATION_NAME)
                 .build()
 
         } catch (e: Exception) {
-            Log.e(Companion.TAG, " Failed to create Sheets service: ${e.message}", e)
+            Log.e(TAG, "Failed to create Sheets service: ${e.message}", e)
             throw e
         }
     }
@@ -117,7 +104,8 @@ class GoogleSheetsService @Inject constructor(
                 .get(spreadsheetId, headerRange)
                 .execute()
 
-            val existingHeaders = headerResponse.getValues()?.firstOrNull()?.map { it.toString() } ?: emptyList()
+            val existingHeaders =
+                headerResponse.getValues()?.firstOrNull()?.map { it.toString() } ?: emptyList()
 
             if (existingHeaders.isEmpty()) {
                 // No headers exist, create them
@@ -178,7 +166,8 @@ class GoogleSheetsService @Inject constructor(
                 .get(spreadsheetId, headerRange)
                 .execute()
 
-            val headers = headerResponse.getValues()?.firstOrNull()?.map { it.toString() } ?: emptyList()
+            val headers =
+                headerResponse.getValues()?.firstOrNull()?.map { it.toString() } ?: emptyList()
 
             // Map columns to their positions based on headers
             val rowData = mutableListOf<Any>()
@@ -197,7 +186,10 @@ class GoogleSheetsService @Inject constructor(
                 .setInsertDataOption("INSERT_ROWS")
                 .execute()
 
-            Log.d(TAG, "Bug report added successfully to $sheetName. Updated ${result.updates?.updatedRows} rows")
+            Log.d(
+                TAG,
+                "Bug report added successfully to $sheetName. Updated ${result.updates?.updatedRows} rows"
+            )
             return@withContext true
 
         } catch (e: Exception) {

@@ -2,7 +2,7 @@ package com.example.projectmanagement.data
 
 import android.util.Log
 import com.example.projectmanagement.BuildConfig
-import com.example.projectmanagement.di.ApiService
+import com.example.projectmanagement.network.api.ApiService
 import com.example.projectmanagement.di.utils.BaseResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

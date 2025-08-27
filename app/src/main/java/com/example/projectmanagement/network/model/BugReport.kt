@@ -1,4 +1,4 @@
-package com.example.projectmanagement.model
+package com.example.projectmanagement.network.model
 
 import androidx.annotation.Keep
 

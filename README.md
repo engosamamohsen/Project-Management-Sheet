@@ -17,6 +17,45 @@ A modern Android application built with **Jetpack Compose** and **MVVM architect
 
 ---
 
+### Network Flow
+
+1. **Configuration** → `NetworkConfigImpl` loads credentials from BuildConfig
+2. **Service Creation** → `AppModule` provides configured network services
+3. **Repository** → `NetworkRepository` abstracts network operations
+4. **API Calls** → Services handle Google Sheets and ImgBB operations
+5. **Data Mapping** → Models structure data for UI consumption
+
+### Network Structure Documentation
+1. **Shows your actual file organization** based on the code excerpts
+2. **Explains the purpose** of each package and file
+3. **Highlights key architectural decisions** (Repository pattern, DI, etc.)
+4. **Demonstrates the network flow** from configuration to API calls
+5. **Provides usage examples** for developers
+
+### Network Components
+
+**🔧 Dependency Injection (`di/`)**
+- `AppModule.kt` - Main DI module providing network dependencies (Retrofit, OkHttp, Google Sheets)
+
+**🌐 API Layer (`network/api/`)**
+- `ApiService.kt` - Retrofit interface for ImgBB image upload API
+
+**⚙️ Configuration (`network/config/`)**
+- `NetworkConfig.kt` - Interface for network configuration
+- `NetworkConfigImpl.kt` - Implementation using BuildConfig for secure credential management
+
+**🛠️ Services (`network/di/`)**
+- `GoogleSheetsService.kt` - Google Sheets API integration with credential management
+- Handles sheet creation, header management, and data operations
+
+**📋 Models (`network/model/`)**
+- `BugReport.kt` - Data class for bug report structure with Excel mapping
+
+**🗂️ Repository (`network/repository/`)**
+- `NetworkRepository.kt` - Repository pattern abstracting network operations
+- `GoogleSheetsRepository.kt` - Google Sheets specific repository implementation
+
+
 ## 🏗️ Architecture
 
 The app follows **MVVM (Model-View-ViewModel)** for clear separation of concerns.

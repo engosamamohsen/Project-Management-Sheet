@@ -7,12 +7,15 @@ import androidx.core.content.edit
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
 import com.example.projectmanagement.app.MyApplication
+import dagger.hilt.android.qualifiers.ApplicationContext
 import java.util.Locale
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class MySharedPreferences @Inject constructor(val context: Context) {
+class MySharedPreferences @Inject constructor(
+    @ApplicationContext private val context: Context  // Add @ApplicationContext
+) {
     val PREFERENCES_NAME = "app-sharedPreferences"
     val LANGUAGE = "language"
     val DEFAULT_LANGUAGE = "en"
