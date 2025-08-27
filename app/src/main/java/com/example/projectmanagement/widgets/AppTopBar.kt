@@ -23,6 +23,7 @@ fun TopAppBar(
     textCenter: String? = null,
     navController: NavController? = null,
     end: @Composable (() -> Unit)? = null,
+    onBackClick: (() -> Unit)? = null,
 ) {
     Box (
         modifier = modifier
@@ -42,7 +43,10 @@ fun TopAppBar(
 
         navController?.let {
             IconButton(onClick = {
-                it.popBackStack()
+                if(onBackClick == null)
+                    it.popBackStack()
+                else
+                    onBackClick()
             },modifier = Modifier.align(Alignment.CenterStart).size(48.dp)) {
 
                 Icon(

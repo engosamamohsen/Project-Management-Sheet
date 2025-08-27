@@ -5,7 +5,7 @@ import com.example.projectmanagement.BuildConfig
 import com.example.projectmanagement.di.GoogleSheetsService
 import com.example.projectmanagement.di.utils.BaseResponse
 import com.example.projectmanagement.model.BugReport
-import com.example.projectmanagement.screens.bug.viewModel.EXCEL_COLUMN
+import com.example.projectmanagement.screens.bug.EXCEL_COLUMN
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat

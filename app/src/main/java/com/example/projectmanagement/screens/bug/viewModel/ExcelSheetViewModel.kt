@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.projectmanagement.domain.bug.ExcelSheetUseCase
 import com.example.projectmanagement.model.BugReport
+import com.example.projectmanagement.screens.bug.EXCEL_COLUMN
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

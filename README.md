@@ -1,33 +1,88 @@
 # Project Management Bug Reporting System
 
-A modern Android application built with **Jetpack Compose** and **MVVM architecture** for managing bug reports with automatic Excel sheet integration and image uploading capabilities.
+A modern Android application built with **Jetpack Compose** and **MVVM architecture** for managing bug reports with **Google Sheets integration** and **cloud image uploading**.
+
+---
 
 ## 🚀 Features
 
-- **Dynamic Excel Integration**: Automatically creates and manages headers in Google Sheets
-- **Image Upload**: Upload multiple images to ImgBB cloud storage
-- **Real-time Progress**: Track upload and submission progress
-- **MVVM Architecture**: Clean, maintainable code structure
-- **Dynamic Header Management**: Enum-based column management with automatic Excel synchronization
-- **Bug List View**: Fetch and display reported bugs directly from Google Sheets on the home screen
-- **Demo Video**: Walkthrough available in `assets/video.webm`
+- **Dynamic Excel Integration**: Automatically creates and manages headers in Google Sheets.
+- **Image Upload**: Upload single or multiple images to ImgBB cloud storage.
+- **Image Sharing Integration**: Receive images from other apps via Android's share mechanism.
+- **Real-time Progress**: Track upload and submission progress.
+- **Bug List View**: Fetch and display reported bugs directly from Google Sheets.
+- **MVVM Architecture**: Clean, maintainable, testable, and lifecycle-aware.
+- **Dynamic Header Management**: Enum-based column system with auto Excel synchronization.
+- **Demo Video**: Walkthrough included in `assets/video.webm`.
+
+---
 
 ## 🏗️ Architecture
 
-This project follows **MVVM (Model-View-ViewModel)** architecture pattern for clean separation of concerns:
+The app follows **MVVM (Model-View-ViewModel)** for clear separation of concerns.
 
-### Benefits of MVVM Implementation:
-- **Separation of Concerns**: UI, business logic, and data handling are separated
-- **Testability**: Each layer can be tested independently
-- **Maintainability**: Changes in one layer don't affect others
-- **Reusability**: ViewModels and UseCases can be reused across different UI components
-- **Lifecycle Awareness**: ViewModels survive configuration changes
+### Benefits
+- ✅ Separation of UI, business logic, and data layers
+- ✅ Testable components
+- ✅ Maintainable & extendable code
+- ✅ Lifecycle awareness
+- ✅ Reusable ViewModels & UseCases
+
+---
+
+## 📸 Image Sharing Integration
+
+The app supports receiving images from other applications through Android's built-in **sharing intent system**, making bug reporting seamless.
+
+### Supported Sources
+- Gallery / Photos (single or multiple images)
+- Camera (share photos immediately after capture)
+- Screenshots
+- WhatsApp / Messenger
+- Chrome & other browsers
+- File managers
+- Any app with image sharing support
+
+### Workflow
+1. Select an image in any app (Gallery, Camera, WhatsApp, etc.).
+2. Tap **Share** → Select **Project Management**.
+3. App opens the **Bug Submission** screen with the shared image(s) pre-loaded.
+
+### Technical Implementation
+```xml
+<!-- AndroidManifest.xml - Intent filters for image sharing -->
+<intent-filter>
+    <action android:name="android.intent.action.SEND" />
+    <category android:name="android.intent.category.DEFAULT" />
+    <data android:mimeType="image/*" />
+</intent-filter>
+
+<intent-filter>
+    <action android:name="android.intent.action.SEND_MULTIPLE" />
+    <category android:name="android.intent.category.DEFAULT" />
+    <data android:mimeType="image/*" />
+</intent-filter>
+```
+
+### Key Features
+- ✅ Single image sharing (`ACTION_SEND`)
+- ✅ Multiple image sharing (`ACTION_SEND_MULTIPLE`)
+- ✅ Works whether app is closed or running
+- ✅ Automatic navigation to bug submission screen
+- ✅ Toast notifications for user feedback
+- ✅ State management across navigation
+
+### Usage Examples
+- **Quick Bug Report from Screenshot**
+    - Take a screenshot → Share → Project Management → Add description → Submit
+- **Multiple Images**
+    - Select multiple images in Gallery → Share → Project Management → Pre-loaded in bug form
+
+---
 
 ## 📋 Dynamic Header Management
 
-### How It Works
-
-The application uses an **enum-based system** for dynamic Excel header creation:
+The app uses an **enum-based system** for Google Sheets headers:
 
 ```kotlin
 enum class EXCEL_COLUMN {
@@ -39,54 +94,34 @@ enum class EXCEL_COLUMN {
     DEVICE,
     REPORTER,
     CATEGORY,
-    NEW_FIELD // ← Add your new column here
+    NEW_FIELD // ← Add new column here
 }
 ```
 
-**Headers Auto-Creation**: The system automatically detects new enum values and creates corresponding headers in your Google Sheet.
-
-**Usage in Code**:
-```kotlin
-excelSheetViewModel.submitBugReport(
-    mapOf(
-        EXCEL_COLUMN.DESCRIPTION.name to "Bug description",
-        EXCEL_COLUMN.NEW_FIELD.name to "New field value"
-    )
-)
-```
+New columns are auto-created in Google Sheets when added to the enum.
 
 ---
 
 ## ⚙️ Configuration
 
 ### 1. Local Properties Setup
-Create/update `local.properties` file in your project root:
+Create a `local.properties` file:
 
 ```properties
-# Local configuration - DO NOT commit to version control
 sdk.dir=YOUR_ANDROID_SDK_PATH
-
-# ImgBB API Key for image uploading
 imgbb.api.key=YOUR_IMGBB_API_KEY
-
-# Google Sheets Spreadsheet ID
 google.sheets.spreadsheet.id=YOUR_SPREADSHEET_ID
 ```
 
 ### 2. Google Sheets Setup
-- Create a new Google Spreadsheet
-- Get Spreadsheet ID from URL:
-  ```
-  https://docs.google.com/spreadsheets/d/[SPREADSHEET_ID]/edit
-  ```
-- Create a **Google Service Account** (JSON key file)
-- Place `service-account-key.json` inside **`app/src/main/assets/`** (⚠️ don’t commit this file to GitHub)
-- Share the spreadsheet with the service account email
+- Create spreadsheet, copy Spreadsheet ID
+- Create a Service Account (JSON key)
+- Place JSON in `app/src/main/assets/service-account-key.json`
+- Share spreadsheet with service account email
 
 ### 3. ImgBB Setup
 - Register at [ImgBB](https://imgbb.com)
-- Get your API key from the API page
-- Add it to `local.properties` as `imgbb.api.key`
+- Add API key to `local.properties`
 
 ---
 
@@ -96,17 +131,16 @@ google.sheets.spreadsheet.id=YOUR_SPREADSHEET_ID
 
 ---
 
-## 📦 Dependencies Used
+## 📦 Dependencies
 
 ```kotlin
-// Google Sheets API
+// Google Sheets
 implementation("com.google.api-client:google-api-client-android:2.0.0")
 implementation("com.google.apis:google-api-services-sheets:v4-rev20220927-2.0.0")
 implementation("com.google.auth:google-auth-library-oauth2-http:1.19.0")
 implementation("com.google.api-client:google-api-client-gson:2.0.0")
-implementation("com.google.http-client:google-http-client-jackson2:1.42.3")
 
-// HTTP Client & Image Upload
+// Retrofit & OkHttp
 implementation("com.squareup.retrofit2:retrofit:3.0.0")
 implementation("com.squareup.retrofit2:converter-gson:3.0.0")
 implementation("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.11")
@@ -115,7 +149,7 @@ implementation("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.11")
 implementation("com.google.dagger:hilt-android:2.57.1")
 ksp("com.google.dagger:hilt-compiler:2.57.1")
 
-// UI & Navigation
+// Compose & Navigation
 implementation("androidx.compose.ui:ui")
 implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
 implementation("androidx.navigation:navigation-compose:2.9.3")
@@ -132,15 +166,33 @@ implementation("androidx.security:security-crypto:1.1.0")
 
 ---
 
-## 🛠️ Build Configuration
+## 📱 Usage Flow
+
+1. Select or share image(s)
+2. Add bug description
+3. Submit → App automatically:
+    - Uploads images to ImgBB
+    - Creates/updates headers in Google Sheets
+    - Submits bug data
+
+### Bug List View
+- Home screen fetches bugs from Google Sheets
+- Displays details: description, status, priority, images, etc.
+
+---
+
+## 📹 Demo
+▶️ [Watch Demo](./app/src/main/assets/video.webm)
+
+---
+
+## 🛠️ Build Config
 
 ```kotlin
-// In app/build.gradle.kts
 android {
     defaultConfig {
         val properties = Properties()
         val localProperties = File(project.rootProject.file("local.properties").path)
-
         if (localProperties.exists()) {
             properties.load(localProperties.inputStream())
         }
@@ -148,8 +200,8 @@ android {
         val imgbbApiKey: String = properties.getProperty("imgbb.api.key") ?: ""
         val excelSheetId: String = properties.getProperty("google.sheets.spreadsheet.id") ?: ""
 
-        buildConfigField("String", "IMGBB_API_KEY", ""$imgbbApiKey"")
-        buildConfigField("String", "EXCEL_API_KEY", ""$excelSheetId"")
+        buildConfigField("String", "IMGBB_API_KEY", "\"$imgbbApiKey\"")
+        buildConfigField("String", "EXCEL_API_KEY", "\"$excelSheetId\"")
     }
 
     buildFeatures {
@@ -160,122 +212,23 @@ android {
 
 ---
 
-## 📱 Usage
-
-**Basic Bug Report Flow**
-1. Select images from gallery
-2. Add description
-3. Submit → App automatically:
-    - Uploads images to ImgBB
-    - Creates/updates Excel headers
-    - Submits data to Google Sheets
-
-**Bug List View**
-- Home screen fetches bug reports from Google Sheets
-- Displays them with details (description, status, priority, images, etc.)
-
----
-
-## 📹 Demo
-You can preview the app in action with the included demo video:
-
-[▶️ Watch Demo](./app/src/main/assets/video.webm)
-
----
-
-## 🔒 Security Benefits of `local.properties`
-
-- API keys are **not committed** to version control
-- Supports different keys per developer
-- Easy switching between environments
-- Compile-time injection via `BuildConfig`
-
-**Best Practices**:
-- ✅ Add `local.properties` to `.gitignore`
-- ✅ Use `BuildConfig` for compile-time safety
-- ✅ Provide example template for teammates
-
----
-
-## 🚀 Getting Started
-
-```bash
-git clone https://github.com/engosamamohsen/Project-Management-Sheet.git
-cd Project-Management-Sheet
-
-# Add your local.properties file
-# Add service-account-key.json to app/src/main/assets/
-./gradlew build
-```
-
-**Example local.properties**:
-```properties
-sdk.dir=YOUR_ANDROID_SDK_PATH
-imgbb.api.key=YOUR_IMGBB_API_KEY
-google.sheets.spreadsheet.id=YOUR_SPREADSHEET_ID
-```
-
-# PROJECT CONFIGURATION TEMPLATE
-
-## Android SDK Path
-sdk.dir=YOUR_ANDROID_SDK_PATH
-
-## ImgBB API Configuration
-imgbb.api.key=YOUR_IMGBB_API_KEY
-
-## Google Sheets Configuration
-google.sheets.spreadsheet.id=YOUR_SPREADSHEET_ID
-
-## Google Service Account Configuration
-
-# 1. Go to Google Cloud Console
-# 2. IAM & Admin → Service Accounts → Create Service Account
-# 3. Name: "secure-bug-tracker-2024" (DIFFERENT name!)
-# 4. Description: "New secure service account for bug reports"
-# 5. Role: "Editor"
-# 6. Download JSON key
-# 7. DO NOT share this JSON anywhere!
-
-## (Get these from your downloaded service account JSON file)
-google.service.account.type=service_account
-google.service.account.project_id=YOUR_PROJECT_ID
-google.service.account.private_key_id=YOUR_PRIVATE_KEY_ID
-google.service.account.private_key=-----BEGIN PRIVATE KEY-----\nYOUR_PRIVATE_KEY\n-----END PRIVATE KEY-----\n
-google.service.account.client_email=YOUR_SERVICE_ACCOUNT@YOUR_PROJECT.iam.gserviceaccount.com
-google.service.account.client_id=YOUR_CLIENT_ID
-google.service.account.auth_uri=https://accounts.google.com/o/oauth2/auth
-google.service.account.token_uri=https://oauth2.googleapis.com/token
-google.service.account.auth_provider_x509_cert_url=https://www.googleapis.com/oauth2/v1/certs
-google.service.account.client_x509_cert_url=YOUR_CERT_URL
-
-
----
-
 ## 📁 Project Structure
 
 ```
 app/
 ├── src/main/
 │   ├── assets/
-│   │   ├── service-account-key.json (Add your Google service account key, DO NOT COMMIT)
+│   │   ├── service-account-key.json (DO NOT COMMIT)
 │   │   └── video.webm (Demo video)
 │   ├── java/com/example/projectmanagement/
-│   │   ├── data/
-│   │   │   ├── ExcelSheetRepository.kt
-│   │   │   └── UploadImagesRepository.kt
-│   │   ├── di/
-│   │   │   ├── GoogleSheetsService.kt
-│   │   │   ├── ApiService.kt
-│   │   │   └── RetrofitModule.kt
-│   │   ├── domain/bug/
-│   │   │   └── ExcelSheetUseCase.kt
-│   │   ├── screens/auth/bug/
-│   │   │   ├── add/AddBugScreenUI.kt
-│   │   │   └── viewModel/ExcelSheetViewModel.kt
+│   │   ├── data/ (repositories)
+│   │   ├── di/ (dependency injection)
+│   │   ├── domain/bug/ (use cases)
+│   │   ├── screens/auth/bug/ (UI + ViewModel)
 │   │   └── model/
 │   └── res/
 ├── build.gradle.kts
-└── local.properties (Create this file)
+└── local.properties (local config)
 ```
 
 ---
@@ -283,7 +236,6 @@ app/
 ## 🧪 Testing
 
 ```kotlin
-// In your ViewModel
 fun testConnection() {
     viewModelScope.launch {
         val isConnected = excelSheetUseCase.checkConnection()
@@ -294,64 +246,15 @@ fun testConnection() {
 
 ---
 
-## 📝 License
-This project is licensed under the **MIT License** – see the LICENSE file for details.
+## 🔒 Security Best Practices
+- Never commit `local.properties` or JSON keys
+- Use `BuildConfig` for API key injection
+- Provide `.gitignore` template
+- Different keys per environment
 
 ---
 
-## ⚙️ Complete Setup Guide
+## 📝 License
+This project is licensed under the **MIT License**.
 
-### 1. Google Cloud Platform Setup
-
-**Step 1: Create Google Cloud Project**
-- Go to [Google Cloud Console](https://console.cloud.google.com/)
-- Click "Select a project" → "New Project"
-- Project name: `Bug Reports Management`
-- Click "Create"
-
-**Step 2: Enable Google Sheets API**
-- In the Google Cloud Console, go to **APIs & Services → Library**
-- Search for **Google Sheets API**
-- Click on it and press **Enable**
-
-**Step 3: Create Service Account**
-- Go to **IAM & Admin → Service Accounts**
-- Click **Create Service Account**
-- Service account details:
-    - Name: `secure-bug-tracker-2024`
-    - Description: Service account for bug reporting app
-- Click **Create and Continue**
-
-**Step 4: Grant Permissions**
-- Role: Select `Editor` (or `Sheets Editor` for stricter security)
-- Click **Continue → Done**
-
-**Step 5: Create and Download JSON Key**
-- Find your newly created service account in the list
-- Click on the email address to open details
-- Go to **Keys** tab
-- Click **Add Key → Create new key**
-- Select **JSON** format
-- Click **Create**
-- ⚠️ IMPORTANT: Save this file securely and DO NOT share it!
-
-### 2. Google Sheets Setup
-
-**Step 1: Create Google Spreadsheet**
-- Go to [Google Sheets](https://sheets.google.com)
-- Click **Blank** to create a new spreadsheet
-- Rename it to `Bug Reports Database`
-- Copy the Spreadsheet ID from the URL:
-  ```
-  https://docs.google.com/spreadsheets/d/[SPREADSHEET_ID]/edit
-  ```
-
-**Step 2: Share Sheet with Service Account**
-- In your Google Sheet, click **Share** (top right)
-- Add your service account email (from the JSON file), e.g.:
-  ```
-  secure-bug-tracker-2024@your-project-id.iam.gserviceaccount.com
-  ```
-- Set permission to **Editor**
-- Uncheck **Notify people** (since it's a service account)
-- Click **Share**
+---
