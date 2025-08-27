@@ -170,13 +170,47 @@ google.service.account.auth_provider_x509_cert_url=https://www.googleapis.com/oa
 google.service.account.client_x509_cert_url=https://www.googleapis.com/robot/v1/metadata/x509/YOUR_SERVICE_ACCOUNT_EMAIL%40YOUR_PROJECT.iam.gserviceaccount.com
 ```
 
-### 2. Google Sheets Setup
-- Create spreadsheet, copy Spreadsheet ID
-- Create a Service Account (JSON key)
-- Place JSON in `app/src/main/assets/service-account-key.json`
-- Share spreadsheet with service account email
+### 2. Getting Google Sheets Spreadsheet ID
+- Go to Google Sheets in `https://docs.google.com/spreadsheets/u/0/`
+- Click "+ Blank" to create a new spreadsheet
+- Give your spreadsheet a meaningful name (e.g., "Bug Reports - Project Management")
+- Extract the Spreadsheet ID
+  - Look at the URL of your spreadsheet:
+    https://docs.google.com/spreadsheets/d/17xQ9xMggCMVXSmO2Ww9EBu1fBIXQG4G8tsTlELCXD9Q/edit#gid=0
+  - The Spreadsheet ID is the long string between /d/ and /edit:
+    17xQ9xMggCMVXSmO2Ww9EBu1fBIXQG4G8tsTlELCXD9Q
+  - Copy this ID and add it to your local.properties:
+    google.sheets.spreadsheet.id=17xQ9xMggCMVXSmO2Ww9EBu1fBIXQG4G8tsTlELCXD9Q
 
-### 3. ImgBB Setup
+### 2. Google Sheets Setup
+- Go to Google Cloud Console `https://console.cloud.google.com/`
+- Create a new project or select existing one
+- Enable Google Sheets API:
+  - Go to APIs & Services → Library
+  - Search for "Google Sheets API"
+  - Click Enable
+- Click Create and Continue
+- Skip role assignment (click Continue)
+- Click Done
+
+### 3. Generate JSON Key
+- Find your service account in the credentials list
+- Click on the service account email
+- Go to Keys tab
+- Click Add Key → Create New Key
+- Select JSON format
+- Click Create - JSON file will download
+  - "client_email": "EMAIL_SHARE_WITH_GOOGLE_SHEETS", // → google.service.account.client_email will be share into excel sheet
+
+### 4. Generate JSON Key
+- Open your Google Spreadsheet
+- Click Share (top-right corner)
+- Add the service account email as an editor:"EMAIL_SHARE_WITH_GOOGLE_SHEETS"
+- Set permission to Editor
+- Click Send
+
+
+### 5. ImgBB Setup
 - Register at [ImgBB](https://imgbb.com)
 - Add API key to `local.properties`
 
