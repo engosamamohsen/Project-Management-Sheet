@@ -146,10 +146,28 @@ New columns are auto-created in Google Sheets when added to the enum.
 ### 1. Local Properties Setup
 Create a `local.properties` file:
 
+
 ```properties
+# Android SDK Location
 sdk.dir=YOUR_ANDROID_SDK_PATH
+
+# ImgBB API Configuration
 imgbb.api.key=YOUR_IMGBB_API_KEY
+
+# Google Sheets Configuration
 google.sheets.spreadsheet.id=YOUR_SPREADSHEET_ID
+
+# Google Service Account Configuration (from your JSON file)
+google.service.account.type=service_account
+google.service.account.project_id=YOUR_PROJECT_ID
+google.service.account.private_key_id=YOUR_PRIVATE_KEY_ID
+google.service.account.private_key=-----BEGIN PRIVATE KEY-----\nYOUR_PRIVATE_KEY_CONTENT\n-----END PRIVATE KEY-----\n
+google.service.account.client_email=YOUR_SERVICE_ACCOUNT_EMAIL@YOUR_PROJECT.iam.gserviceaccount.com
+google.service.account.client_id=YOUR_CLIENT_ID
+google.service.account.auth_uri=https://accounts.google.com/o/oauth2/auth
+google.service.account.token_uri=https://oauth2.googleapis.com/token
+google.service.account.auth_provider_x509_cert_url=https://www.googleapis.com/oauth2/v1/certs
+google.service.account.client_x509_cert_url=https://www.googleapis.com/robot/v1/metadata/x509/YOUR_SERVICE_ACCOUNT_EMAIL%40YOUR_PROJECT.iam.gserviceaccount.com
 ```
 
 ### 2. Google Sheets Setup
