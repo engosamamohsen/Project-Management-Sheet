@@ -1,4 +1,3 @@
-
 # Project Management Bug Reporting System
 
 A modern Android application built with **Jetpack Compose** and **MVVM architecture** for managing bug reports with automatic Excel sheet integration and image uploading capabilities.
@@ -216,24 +215,28 @@ imgbb.api.key=YOUR_IMGBB_API_KEY
 google.sheets.spreadsheet.id=YOUR_SPREADSHEET_ID
 ```
 
-# ========================================
 # PROJECT CONFIGURATION TEMPLATE
-# ========================================
-# 1. Copy this file to "local.properties"
-# 2. Fill in your actual values
-# 3. DO NOT commit local.properties to git
 
-# Android SDK Path
+## Android SDK Path
 sdk.dir=YOUR_ANDROID_SDK_PATH
 
-# ImgBB API Configuration
+## ImgBB API Configuration
 imgbb.api.key=YOUR_IMGBB_API_KEY
 
-# Google Sheets Configuration
+## Google Sheets Configuration
 google.sheets.spreadsheet.id=YOUR_SPREADSHEET_ID
 
-# Google Service Account Configuration
-# (Get these from your downloaded service account JSON file)
+## Google Service Account Configuration
+
+# 1. Go to Google Cloud Console
+# 2. IAM & Admin → Service Accounts → Create Service Account
+# 3. Name: "secure-bug-tracker-2024" (DIFFERENT name!)
+# 4. Description: "New secure service account for bug reports"
+# 5. Role: "Editor"
+# 6. Download JSON key
+# 7. DO NOT share this JSON anywhere!
+
+## (Get these from your downloaded service account JSON file)
 google.service.account.type=service_account
 google.service.account.project_id=YOUR_PROJECT_ID
 google.service.account.private_key_id=YOUR_PRIVATE_KEY_ID
@@ -293,3 +296,62 @@ fun testConnection() {
 
 ## 📝 License
 This project is licensed under the **MIT License** – see the LICENSE file for details.
+
+---
+
+## ⚙️ Complete Setup Guide
+
+### 1. Google Cloud Platform Setup
+
+**Step 1: Create Google Cloud Project**
+- Go to [Google Cloud Console](https://console.cloud.google.com/)
+- Click "Select a project" → "New Project"
+- Project name: `Bug Reports Management`
+- Click "Create"
+
+**Step 2: Enable Google Sheets API**
+- In the Google Cloud Console, go to **APIs & Services → Library**
+- Search for **Google Sheets API**
+- Click on it and press **Enable**
+
+**Step 3: Create Service Account**
+- Go to **IAM & Admin → Service Accounts**
+- Click **Create Service Account**
+- Service account details:
+    - Name: `secure-bug-tracker-2024`
+    - Description: Service account for bug reporting app
+- Click **Create and Continue**
+
+**Step 4: Grant Permissions**
+- Role: Select `Editor` (or `Sheets Editor` for stricter security)
+- Click **Continue → Done**
+
+**Step 5: Create and Download JSON Key**
+- Find your newly created service account in the list
+- Click on the email address to open details
+- Go to **Keys** tab
+- Click **Add Key → Create new key**
+- Select **JSON** format
+- Click **Create**
+- ⚠️ IMPORTANT: Save this file securely and DO NOT share it!
+
+### 2. Google Sheets Setup
+
+**Step 1: Create Google Spreadsheet**
+- Go to [Google Sheets](https://sheets.google.com)
+- Click **Blank** to create a new spreadsheet
+- Rename it to `Bug Reports Database`
+- Copy the Spreadsheet ID from the URL:
+  ```
+  https://docs.google.com/spreadsheets/d/[SPREADSHEET_ID]/edit
+  ```
+
+**Step 2: Share Sheet with Service Account**
+- In your Google Sheet, click **Share** (top right)
+- Add your service account email (from the JSON file), e.g.:
+  ```
+  secure-bug-tracker-2024@your-project-id.iam.gserviceaccount.com
+  ```
+- Set permission to **Editor**
+- Uncheck **Notify people** (since it's a service account)
+- Click **Share**
